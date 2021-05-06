@@ -4,27 +4,35 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
+func check() {
+	if len(os.Args) < 2 {
+		fmt.Printf("You have to input people names as arguments\n")
+		os.Exit(1)
+	}
+}
+
 func main() {
+	check()
 	clearTerminal()
-	fmt.Print("Hi there! Please enter three names.\n")
 	getNames()
 }
 
 func getNames() {
-	fmt.Print("1.Enter the first person's name: ")
-	var first string
-	fmt.Scanln(&first)
-	fmt.Print("2.Enter the second person's name: ")
-	var second string
-	fmt.Scanln(&second)
-	fmt.Print("3.Enter the third person's name: ")
-	var third string
-	fmt.Scanln(&third)
-	clearTerminal()
-	fmt.Print("There are 3 people in classroom!")
-	fmt.Printf("\nHello %v!\nHi %v and %v!\n", first, second, third)
+	fmt.Printf("There are %v people in classrom!\n", len(os.Args)-1)
+	fmt.Printf("Hello %v!\n", os.Args[1])
+	if len(os.Args) >= 3 {
+		var s, sep string
+		for i := 2; i < len(os.Args); i++ {
+			s += sep + os.Args[i] + " and"
+			sep = " "
+		}
+		i := strings.LastIndex(s, " and")
+		excludingLast := s[:i] + strings.Replace(s[i:], " and", "", 1)
+		fmt.Println("Hi " + excludingLast + "!")
+	}
 }
 
 func clearTerminal() {
